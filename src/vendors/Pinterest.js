@@ -1,5 +1,6 @@
+import _ from 'lodash'
 import store from 'rdx/store'
-import { setLoggingIn, setAuthUser } from 'rdx/actions'
+import { setAuthUser, clearBoards, appendBoards, clearPins, appendPins } from 'rdx/actions'
 
 const PDK = window.PDK
 
@@ -8,16 +9,55 @@ const CONFIG = {
   POPUP_OPTIONS:
     'status=no,resizable=yes,scrollbars=yes,personalbar=no,directories=no,location=no,toolbar=no,menubar=no,width=700,height=500,left=0,top=0',
   PIN_APP: '4939923279528871672',
-  PIN_FIELDS: 'id,name,image[small]',
+  BOARD_FIELDS: 'url,id,name,image[small],counts',
+  PIN_FIELDS: 'id,url,link,board,metadata,image[small]',
   PIN_SCOPE: 'read_public',
 }
 
 // Initialize once with app id
 PDK.init({ appId: CONFIG.PIN_APP, cookie: true })
 
+function ingestBoards() {
+  store.dispatch(clearBoards())
+  PDK.me('boards', { fields: CONFIG.BOARD_FIELDS }, res => {
+    if (_.isNil(res)) {
+      // TODO:
+    } else if (!_.isNil(res.error)) {
+      console.error(res.error)
+    } else {
+      store.dispatch(appendBoards(res.data))
+      if (res.hasNext) {
+        res.next()
+      }
+    }
+  })
+}
+
+function ingestPins() {
+  PDK.me('pins', { fields: CONFIG.PIN_FIELDS }, res => {
+    if (_.isNil(res)) {
+      // TODO:
+    } else if (!_.isNil(res.error)) {
+      console.error(res.error)
+    } else {
+      console.log({ res })
+      store.dispatch(appendPins(res.data))
+      if (res.hasNext) {
+        res.next()
+      }
+    }
+  })
+}
+
+function ingest() {
+  // ingestBoards()
+  ingestPins()
+}
+
 function userInfo() {
   PDK.me(res => {
     store.dispatch(setAuthUser(res.data))
+    ingest()
   })
 }
 
@@ -30,7 +70,6 @@ const Pinterest = {
      *  @param {Function} callback - function fired on completion
      */
   login: function() {
-    store.dispatch(setLoggingIn(true))
     PDK.login({ scope: CONFIG.PIN_SCOPE }, () => {
       userInfo()
     })
@@ -73,9 +112,10 @@ const Pinterest = {
     *  Use SDK to request current users boards
     *  @param {Function} callback - function fired on completion
     */
-  myBoards: function(callback) {
+  myPins: function(callback) {
     PDK.me('pins', callback)
   },
+  ingest,
 }
 
 export default Pinterest

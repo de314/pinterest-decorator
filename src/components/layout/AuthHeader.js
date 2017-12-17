@@ -1,11 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Pinterest from 'vendors/Pinterest'
 
+import { compose, withProps } from 'recompose'
 import withAuth from 'hoc/withAuth'
 
 import { Link } from 'react-router-dom'
 
-const AuthHeader = ({ user, startLogout }) => {
+const AuthHeader = ({ user, startLogout, sync }) => {
   return (
     <div className="AuthHeader">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -35,7 +37,7 @@ const AuthHeader = ({ user, startLogout }) => {
           </div>
           <div className="navbar-nav ml-auto">
             <span className="nav-item">
-              <button className="btn btn-success">
+              <button className="btn btn-success" onClick={sync}>
                 <i className="fa fa-refresh" />
               </button>
             </span>
@@ -59,4 +61,9 @@ AuthHeader.propTypes = {
 
 export const RawAuthHeader = AuthHeader
 
-export default withAuth(AuthHeader)
+export default compose(
+  withAuth,
+  withProps({
+    sync: () => Pinterest.ingest(),
+  })
+)(AuthHeader)
