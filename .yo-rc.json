@@ -1,0 +1,12 @@
+{
+  "generator-re3": {
+    "promptValues": {
+      "withReduxSagas": true,
+      "withAuth": false,
+      "ui": [
+        "bootstrap4",
+        "fontawesome"
+      ]
+    }
+  }
+}
