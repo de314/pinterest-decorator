@@ -9,6 +9,7 @@ const CONFIG = {
   POPUP_OPTIONS:
     'status=no,resizable=yes,scrollbars=yes,personalbar=no,directories=no,location=no,toolbar=no,menubar=no,width=700,height=500,left=0,top=0',
   PIN_APP: '4939923279528871672',
+  USER_FIELDS: 'id,username,first_name,bio,counts,image',
   BOARD_FIELDS: 'url,id,name,image[small],counts',
   PIN_FIELDS: 'id,url,link,board,metadata,image[small]',
   PIN_SCOPE: 'read_public',
@@ -40,7 +41,6 @@ function ingestPins() {
     } else if (!_.isNil(res.error)) {
       console.error(res.error)
     } else {
-      console.log({ res })
       store.dispatch(appendPins(res.data))
       if (res.hasNext) {
         res.next()
@@ -55,7 +55,7 @@ function ingest() {
 }
 
 function userInfo() {
-  PDK.me(res => {
+  PDK.request('/me', { fields: CONFIG.USER_FIELDS }, res => {
     store.dispatch(setAuthUser(res.data))
     ingest()
   })
@@ -115,7 +115,11 @@ const Pinterest = {
   myPins: function(callback) {
     PDK.me('pins', callback)
   },
-  ingest,
+  /*
+    *  Pull all of the info down from the server, including the authed user
+    *  @param {Function} callback - function fired on completion
+    */
+  ingest: userInfo,
 }
 
 export default Pinterest

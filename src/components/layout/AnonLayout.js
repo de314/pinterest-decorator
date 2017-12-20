@@ -9,7 +9,9 @@ const AnonLayout = ({ loggingIn, startLogin }) => {
   return (
     <div className="AnonLayout container-fluid">
       <AnonHeader />
-      <AnonRoutes />
+      <div className="main-content">
+        <AnonRoutes />
+      </div>
     </div>
   )
 }

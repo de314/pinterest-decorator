@@ -5,7 +5,7 @@ import Pinterest from 'vendors/Pinterest'
 import { compose, withProps } from 'recompose'
 import withAuth from 'hoc/withAuth'
 
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const AuthHeader = ({ user, startLogout, sync }) => {
   return (
@@ -28,12 +28,12 @@ const AuthHeader = ({ user, startLogout, sync }) => {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <div className="navbar-nav mr-auto">
-            <Link to="/" className="nav-item nav-link">
-              Home
-            </Link>
-            <Link to="/about" className="nav-item nav-link">
-              About
-            </Link>
+            <NavLink to="/pins" className="nav-item nav-link">
+              Pins
+            </NavLink>
+            <NavLink to="/plans" className="nav-item nav-link">
+              Meal Plans
+            </NavLink>
           </div>
           <div className="navbar-nav ml-auto">
             <span className="nav-item">
@@ -41,10 +41,10 @@ const AuthHeader = ({ user, startLogout, sync }) => {
                 <i className="fa fa-refresh" />
               </button>
             </span>
-            <Link to="/profile" className="nav-item nav-link">
+            <NavLink to="/profile" className="nav-item nav-link">
               Hi {user.first_name}
-            </Link>
-            <Link to="/login" className="nav-item nav-link" onClick={() => startLogout()}>
+            </NavLink>
+            <Link to="/" className="nav-item nav-link" onClick={() => startLogout()}>
               Logout
             </Link>
           </div>
