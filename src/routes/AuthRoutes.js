@@ -5,6 +5,7 @@ import Home from 'routes/home/Home'
 import ProfilePage from 'routes/profile/ProfilePage'
 import PlansListPage from 'routes/plans/PlansListPage'
 import PlanViewPage from 'routes/plans/PlanViewPage'
+import BoardsListPage from 'routes/boards/BoardsListPage'
 // ::IMPORT_AUTH::
 import Page404 from 'routes/common/Page404'
 // ::IMPORT_COMMON::
@@ -16,6 +17,7 @@ const AuthRoutes = () => (
       <Route exact path="/profile" component={ProfilePage} />
       <Route exact path="/plans" component={PlansListPage} />
       <Route exact path="/plans/view/:planId" component={PlanViewPage} />
+      <Route exact path="/boards" component={BoardsListPage} />
       {/* ::ROUTE_AUTH:: */}
       {/* ::ROUTE_COMMON:: */}
       <Route component={Page404} />

@@ -7,13 +7,13 @@ const Profile = ({ user }) => {
   const imgSrc =
     _.isPlainObject(image) && _.keys(image).length > 0
       ? _.values(image)[0].url
-      : `https://robohash.org/${username}.png?set=set2&size=60x60&bgset=bg1`
+      : `https://robohash.org/${username}.png?set=set2&size=280x280&bgset=bg1`
   const { pins, following, followers, boards } = counts
   return (
     <div className="Profile">
       <div className="row mb-5">
         <div className="col col-md-3">
-          <img src={imgSrc} className="img-fluid img-thumbnail" alt="" />
+          <img src={imgSrc} className="img-fluid img-thumbnail w-100" alt="" />
         </div>
         <div className="col col-md-8">
           <div className="h1">

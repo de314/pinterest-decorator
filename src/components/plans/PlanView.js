@@ -13,6 +13,12 @@ const PlanView = ({ plan }) => {
   )
 }
 
-PlanView.propTypes = {}
+PlanView.propTypes = {
+  plan: PropTypes.shape({
+    desc: PropTypes.string.isRequired,
+    pins: PropTypes.arrayOf(PropTypes.object).isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+}
 
 export default PlanView

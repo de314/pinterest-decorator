@@ -11,7 +11,7 @@ function renderPart(part = '', href) {
 
 const Breadcrumbs = ({ parts }) => (
   <div className="Breadcrumbs">
-    <nav className="breadcrumb" role="navigation">
+    <nav className="breadcrumb">
       <ol className="breadcrumb p-0 m-0">
         {parts.map((part, i) => {
           if (_.isString(part)) {
@@ -19,7 +19,9 @@ const Breadcrumbs = ({ parts }) => (
           }
           let { text, href, active = false } = part
           return (
-            <li className={classnames('breadcrumb-item', { active })}>{renderPart(text, href)}</li>
+            <li className={classnames('breadcrumb-item', { active })} key={i}>
+              {renderPart(text, href)}
+            </li>
           )
         })}
       </ol>
@@ -32,7 +34,7 @@ Breadcrumbs.propTypes = {
     PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.shape({
-        active: PropTypes.bool.isRequired,
+        active: PropTypes.bool,
         href: PropTypes.string,
         text: PropTypes.string.isRequired,
       }),

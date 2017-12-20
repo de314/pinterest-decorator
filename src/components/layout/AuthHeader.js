@@ -1,11 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
+import moment from 'moment'
 import Pinterest from 'vendors/Pinterest'
+import { selectPins } from 'rdx/selectors'
 
-import { compose, withProps } from 'recompose'
+import { compose, lifecycle, withProps, withState } from 'recompose'
 import withAuth from 'hoc/withAuth'
+import { connect } from 'react-redux'
 
 import { Link, NavLink } from 'react-router-dom'
+
+function getSyncText(lastSync) {
+  return _.isNil(lastSync) ? '' : moment(lastSync).fromNow()
+}
+
+let SyncButton = ({ sync, lastSync }) => (
+  <div className="SyncButton">
+    <button className="btn btn-success" onClick={sync}>
+      <i className="fa fa-refresh" /> {getSyncText(lastSync)}
+    </button>
+  </div>
+)
+
+SyncButton = compose(
+  connect(state => ({ lastSync: selectPins(state).lastSync })),
+  withState('updateTime', 'setUpdateTime'),
+  lifecycle({
+    componentDidMount() {
+      const { setUpdateTime } = this.props
+      this.interval = setInterval(() => setUpdateTime(new Date().getTime()), 10000)
+    },
+    componentWillUnmount() {
+      clearInterval(this.interval)
+    },
+  })
+)(SyncButton)
 
 const AuthHeader = ({ user, startLogout, sync }) => {
   return (
@@ -28,6 +58,9 @@ const AuthHeader = ({ user, startLogout, sync }) => {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <div className="navbar-nav mr-auto">
+            <NavLink to="/boards" className="nav-item nav-link">
+              Boards
+            </NavLink>
             <NavLink to="/pins" className="nav-item nav-link">
               Pins
             </NavLink>
@@ -37,9 +70,7 @@ const AuthHeader = ({ user, startLogout, sync }) => {
           </div>
           <div className="navbar-nav ml-auto">
             <span className="nav-item">
-              <button className="btn btn-success" onClick={sync}>
-                <i className="fa fa-refresh" />
-              </button>
+              <SyncButton sync={sync} />
             </span>
             <NavLink to="/profile" className="nav-item nav-link">
               Hi {user.first_name}

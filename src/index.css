@@ -5,6 +5,36 @@ body {
   background-color: #ccc;
 }
 
+div.img-square {
+  width: 100%;
+  padding-top: 110%;
+}
+
+.BoardCard {
+  width: 100%;
+  padding-top: 200%;
+  position: relative;
+}
+
+.BoardCard > .card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.BoardCard > .card > div {
+  position: relative;
+  height: 100%;
+}
+
+.BoardCard > .card .cta-row {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+}
+
 .AnonLayout > .main-content {
   margin: 1em;
   padding: 2em;

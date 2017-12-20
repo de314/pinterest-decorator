@@ -5,7 +5,7 @@ import rootReducer from './state'
 // TODO: sagas
 
 const middleware = []
-const persistedSlices = ['auth', 'plans']
+const persistedSlices = ['auth', 'plans', 'pins', 'boards']
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(

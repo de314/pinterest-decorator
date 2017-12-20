@@ -9,9 +9,9 @@ const CONFIG = {
   POPUP_OPTIONS:
     'status=no,resizable=yes,scrollbars=yes,personalbar=no,directories=no,location=no,toolbar=no,menubar=no,width=700,height=500,left=0,top=0',
   PIN_APP: '4939923279528871672',
-  USER_FIELDS: 'id,username,first_name,bio,counts,image',
-  BOARD_FIELDS: 'url,id,name,image[small],counts',
-  PIN_FIELDS: 'id,url,link,board,metadata,image[small]',
+  USER_FIELDS: 'id,username,first_name,bio,counts,image[large]',
+  BOARD_FIELDS: 'url,id,name,image[medium],counts,description',
+  PIN_FIELDS: 'id,url,link,board,metadata,image[medium]',
   PIN_SCOPE: 'read_public',
 }
 
@@ -35,6 +35,7 @@ function ingestBoards() {
 }
 
 function ingestPins() {
+  store.dispatch(clearPins())
   PDK.me('pins', { fields: CONFIG.PIN_FIELDS }, res => {
     if (_.isNil(res)) {
       // TODO:
@@ -50,7 +51,7 @@ function ingestPins() {
 }
 
 function ingest() {
-  // ingestBoards()
+  ingestBoards()
   ingestPins()
 }
 
